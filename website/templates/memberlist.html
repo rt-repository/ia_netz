@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}
+    <h3 align="center">Memberlist</h3>
+    <form method="POST">
+      <div class="form-group">
+        <label for="member"></label>
+        <input
+          type="text"
+          class="form-control"
+          id="member"
+          name="member"
+          placeholder="Enter the name of a new member."
+        />
+      <br />
+      <div>
+        <button type="submit" class="btn btn-secondary">Add Member</button>
+      </div>
+      <br>
+      <ul class="list-group list-group-flush" id="memberlist">
+        {% for member in user.members%}
+        <li class="list-group-item">
+          {{ member.name }}
+          <button type="button" class="close" onClick="deleteMember({{ member.id }})">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </li>
+        {% endfor %}
+      </ul>
+    </form>
+    <br />
+    {% endblock %}
