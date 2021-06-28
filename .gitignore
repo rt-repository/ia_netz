@@ -1,4 +1,4 @@
 .vscode
-.pyc
 website/__pycache__
+website/__init__.pyc
 website/database.db
