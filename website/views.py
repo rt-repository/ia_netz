@@ -1,25 +1,16 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Member, Note
+from .models import Member, Availability
 from . import db
 import json
+import datetime
 
 views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
-    if request.method == 'POST':
-        note = request.form.get('note')
-
-        if len(note) < 1:
-            flash('Note is too short!', category='error')
-        else:
-            new_note = Note(data=note, user_id=current_user.id)
-            db.session.add(new_note)
-            db.session.commit()
-            flash('Note added!', category='success')
-
+    
     return render_template("home.html", user=current_user)
 
 @views.route('/memberlist',  methods=['GET', 'POST'])
@@ -38,31 +29,8 @@ def memberlist():
 
     return render_template("memberlist.html", user=current_user)
 
-@views.route('/availability',  methods=['GET', 'POST'])
-@login_required
-def availability():
-    if request.method == 'POST':
-        startdate = request.form.get('memberchoice')
-        print(startdate)
-    
-    return render_template("availability.html", user=current_user)
-
-
-@views.route('/delete-note', methods=['POST'])
-
-def delete_note():
-    note = json.loads(request.data)
-    noteId = note['noteId']
-    note = Note.query.get(noteId)
-    if note:
-        if note.user_id == current_user.id:
-            db.session.delete(note)
-            db.session.commit()
-
-    return jsonify({})
 
 @views.route('/delete-member', methods=['POST'])
-
 def delete_member():
     member = json.loads(request.data)
     memberId = member['memberId']
@@ -73,3 +41,22 @@ def delete_member():
             db.session.commit()
 
     return jsonify({})
+
+@views.route('/availability',  methods=['GET', 'POST'])
+@login_required
+def availability():
+    if request.method == 'POST':
+        form_date = request.form.get('date')
+        form_starttime = request.form.get('starttime')
+        form_endtime = request.form.get('endtime')
+        startdate=datetime.datetime.strptime(form_date + form_starttime,"%Y-%m-%d %H:%M")
+        enddate=datetime.datetime.strptime(form_date + form_endtime,"%Y-%m-%d %H:%M")
+        new_availability = Availability(startdate = startdate, enddate = enddate,  user_id=current_user.id)
+        
+        db.session.add(new_availability)
+        db.session.commit()
+        flash(' New availability added!', category='success')
+        print(enddate)
+            
+    return render_template("availability.html", user=current_user)
+

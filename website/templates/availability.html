@@ -3,26 +3,26 @@
 <form method="POST">
   <h3 align="center">Availability</h3>
   <div class="form-group">
-    <label for="startdate">Member</label>
+    <label for="member">Member</label>
     <select type="text" class="form-control" id="memberchoice" name="memberchoice">
       {% for member in user.members%}
-      <option>{{ member.name }}</option>
+      <option>{{ member.name}}</option>
       {% endfor %}
     </select>
   </div>
 
   <div class="form-row">
     <div class="col">
-      <label for="startdate">when starts your availability</label>
+      <label for="date">when starts your availability</label>
       <input
         type="date"
         class="form-control"
-        id="startdate"
-        name="startdate"
+        id="date"
+        name="date"
       />
     </div>
     <div class="col">
-      <label for="startdate">from</label>
+      <label for="starttime">from</label>
       <input
         type="time"
         class="form-control"
@@ -31,7 +31,7 @@
       />
     </div>
     <div class="col">
-      <label for="startdate">to</label>
+      <label for="endtime">to</label>
       <input
         type="time"
         class="form-control"
@@ -42,6 +42,14 @@
   </div>
   <br />
   <button type="submit" class="btn btn-secondary">Submit</button>
+  <ul class="list-group list-group-flush" id="memberlist">
+    {% for availability in user.availabilities%}
+    <li class="list-group-item">
+      {{ availability.startdate}}
+    </li>
+    {% endfor %}
+  </ul>
 </form>
+
 
 {% endblock %}
