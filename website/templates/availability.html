@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content%}
-
+<br>
 <form method="POST">
-  <h3 align="center">Availability</h3>
+  <h4 align="left">Availability</h3>
   <div class="form-group">
     <label for="member">Member</label>
     <select type="text" class="form-control" id="memberchoice" name="memberchoice">
@@ -42,10 +42,17 @@
   </div>
   <br />
   <button type="submit" class="btn btn-secondary">Submit</button>
-  <ul class="list-group list-group-flush" id="memberlist">
+  <br />
+  <ul class="list-group" id="memberlist">
     {% for availability in user.availabilities%}
     <li class="list-group-item">
+      {{availability.member}}
+      <p> </p>
       {{ availability.startdate}}
+      {{availability.enddate}}
+      <button type="button" class="close" onClick="deleteAvailability({{ availability.id }})">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </li>
     {% endfor %}
   </ul>

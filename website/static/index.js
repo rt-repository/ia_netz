@@ -8,5 +8,14 @@ function deleteMember(memberId) {
   });
 }
 
+function deleteAvailability(availabilityId) {
+  fetch("/delete-availability", {
+    method: "POST",
+    body: JSON.stringify({ availabilityId: availabilityId }),
+  }).then((_res) => {
+    window.location.href = "/availability";
+  });
+}
+
   
   

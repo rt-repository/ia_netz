@@ -6,6 +6,7 @@ class Availability(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     startdate = db.Column(db.DateTime)
     enddate = db.Column(db.DateTime)
+    member = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Member(db.Model):
