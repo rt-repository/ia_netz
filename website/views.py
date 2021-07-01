@@ -27,6 +27,7 @@ def memberlist():
             db.session.commit()
             flash(' New member added!', category='success')
 
+
     return render_template("memberlist.html", user=current_user)
 
 
@@ -55,10 +56,10 @@ def availability():
         enddate=datetime.datetime.strptime(form_date +" "+ form_endtime,"%Y-%m-%d %H:%M")
         present = datetime.datetime.now()
 
-        if not startdate:
+        if not form_date  :
             flash('Values are missing.', category= 'error')
         elif startdate < present:
-            flash('Your availability starts in the past.', category = 'error')
+            flash('The date is in the past.', category = 'error')
         elif enddate <= startdate:
             flash('Your availability ends earlier than it starts.', category = 'error')
         else:
