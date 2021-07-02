@@ -1,3 +1,4 @@
+from sqlalchemy.orm import backref
 from . import db 
 from flask_login import UserMixin
 from sqlalchemy.sql import func
@@ -20,7 +21,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(150))
     bandname = db.Column(db.String(150))
     members = db.relationship('Member')
-    availabilities = db.relationship('Availability')
+    availabilities = db.relationship('Availability', backref='owner')
 
 
 

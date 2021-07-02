@@ -3,30 +3,42 @@ from flask_login import login_required, current_user
 from .models import Member, Availability
 from . import db
 import json
-import datetime
+from datetime import datetime, time
 
 views = Blueprint('views', __name__)
+
 
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
+    result = ''
+    text = ''
+    ls=[]
     
-    return render_template("home.html", user=current_user)
+    if request.method == 'POST':
+        result1= Availability.query.filter_by(id=1).first()
+        result = Member.query.all()
+        text = result
+        print(len(text))
+        ################
+        
+    return render_template("home.html", user=current_user, result=text)
 
-@views.route('/memberlist',  methods=['GET', 'POST'])
+
+@views.route('/memberlist', methods=['GET', 'POST'])
 @login_required
 def memberlist():
     if request.method == 'POST':
         member = request.form.get('member')
 
         if len(member) < 1:
-            flash('The name of the  new member is too short!', category='error')
+            flash('The name of the  new member is too short!',
+                  category='error')
         else:
             new_member = Member(name=member, user_id=current_user.id)
             db.session.add(new_member)
             db.session.commit()
             flash(' New member added!', category='success')
-
 
     return render_template("memberlist.html", user=current_user)
 
@@ -44,7 +56,7 @@ def delete_member():
     return jsonify({})
 
 
-@views.route('/availability',  methods=['GET', 'POST'])
+@views.route('/availability', methods=['GET', 'POST'])
 @login_required
 def availability():
     if request.method == 'POST':
@@ -52,9 +64,9 @@ def availability():
         form_starttime = request.form.get('starttime')
         form_endtime = request.form.get('endtime')
         member = request.form.get('memberchoice')
-        startdate=datetime.datetime.strptime(form_date +" "+ form_starttime,"%Y-%m-%d %H:%M")
-        enddate=datetime.datetime.strptime(form_date +" "+ form_endtime,"%Y-%m-%d %H:%M")
-        present = datetime.datetime.now()
+        startdate = datetime.strptime(form_date +" "+ form_starttime,"%Y-%m-%d %H:%M")
+        enddate = datetime.strptime(form_date +" "+ form_endtime,"%Y-%m-%d %H:%M")
+        present = datetime.now()
 
         if not form_date  :
             flash('Values are missing.', category= 'error')
@@ -68,8 +80,10 @@ def availability():
             db.session.commit()
             flash(' New availability added!', category='success')
             print(enddate)
+            print(present)
         
     return render_template("availability.html", user=current_user)
+
 
 @views.route('/delete-availability', methods=['POST'])
 def delete_availability():
