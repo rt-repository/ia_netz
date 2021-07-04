@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from .models import Member, Availability
 from . import db
 import json
-from datetime import datetime, time
+from datetime import datetime
 
 
 views = Blueprint('views', __name__)
@@ -76,8 +76,9 @@ def home():
         for c in range(len(final_strtdts)):
             result.append(final_strtdts[c].strftime('%d.%m.%Y %H:%M') + ' - '+ final_enddts[c].strftime('%H:%M'))
         
-        if result[0] > result[1]:
-            result.reverse()
+        if len(result)>1:
+            if result[0] > result[1]:
+                result.reverse()
         
             
     return render_template("plan.html", user=current_user, result = result)
