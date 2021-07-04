@@ -31,12 +31,10 @@ def home():
         for x  in range(1,len(av)+1,1):
             y = Availability.query.filter_by(id=x).first()
             if y.user_id == current_user.id:
-                #if y.startdate >= tday:
                 strtdts.append(y.startdate)
                 #latest startdate should be first index
                 strtdts = sorted(strtdts, reverse=True)
                 #earliest enddate should be first index
-                #if y.enddate >= tday:
                 enddts.append(y.enddate)
                 enddts = sorted(enddts, reverse=False)
 
@@ -75,7 +73,6 @@ def home():
         
         for c in range(len(final_strtdts)):
             result.append(final_strtdts[c].strftime('%d.%m.%Y %H:%M') + ' - '+ final_enddts[c].strftime('%H:%M'))
-        
         if len(result)>1:
             if result[0] > result[1]:
                 result.reverse()
